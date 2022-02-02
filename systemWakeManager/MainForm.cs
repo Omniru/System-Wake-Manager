@@ -159,12 +159,16 @@ namespace systemWakeManager
 					
 			    label1.Text = "Armed Wake Devices";
 			    getWakeDevices("powercfg -devicequery wake_armed", false);
-			}
-		}
+            } else
+            {
+                this.statusPanel.Text = "Error: No device selected. Select All Wake Devices to load";
+            }
+        }
         void DisableAllButtonClick(object sender, EventArgs e)
         {
             if (itemsToAlter.Count() > 0)
             {
+                this.statusPanel.Text = "In progress: this process might take a minute or so";
                 //runCommand(@"powercfg -devicedisablewake “" + itemToAlter + "”");
                 foreach (string device in itemsToAlter)
                 {
@@ -175,6 +179,9 @@ namespace systemWakeManager
 
                 label1.Text = "Armed Wake Devices";
                 getWakeDevices("powercfg -devicequery wake_armed", false);
+            } else
+            {
+                this.statusPanel.Text = "Error: No devices loaded yet. Select All Wake Devices to load";
             }
         }
         void BtnEnableWakeDeviceClick(object sender, EventArgs e)
@@ -187,8 +194,11 @@ namespace systemWakeManager
 
                     label1.Text = "Armed Wake Devices";
 					getWakeDevices("powercfg -devicequery wake_armed", false);
-			}
-		}
+            } else
+            {
+                this.statusPanel.Text = "Error: No device selected. Select All Wake Devices to load";
+            }
+        }
 
 		void BtnAllWakeDevicesClick(object sender, EventArgs e)
 		{
