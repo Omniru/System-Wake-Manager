@@ -28,6 +28,7 @@ namespace systemWakeManager
 	public partial class MainForm : Form
 	{
 		string itemToAlter;
+        LinkedList<string> itemsToAlter = new LinkedList<string>();
 
 		public MainForm()
 		{
@@ -122,16 +123,18 @@ namespace systemWakeManager
 				//lines.Sort;
 				
 				alterWakeDeviceListCoB.Items.Clear();
+
 				
 				if (justClear == false) {
-				
-				
-					alterWakeDeviceListCoB.Items.Add("");
+                    itemsToAlter.Clear();
+
+                    alterWakeDeviceListCoB.Items.Add("");
 			 
 					foreach (var element in lines) {
 			 	
 						if (element != "" && element.Contains(@":\") == false && element.Contains("NONE") == false) {
 							alterWakeDeviceListCoB.Items.Add(element);
+                            itemsToAlter.AddLast(element);
 						}
 			    
 					}
@@ -148,40 +151,42 @@ namespace systemWakeManager
 		void DisableButtonClick(object sender, EventArgs e)
 		{
 			if (itemToAlter != "" && itemToAlter != null) {
-				DialogResult dialogResult = MessageBox.Show("Are you sure you want to disable this item? \n\n" + itemToAlter, itemToAlter, MessageBoxButtons.YesNo);
-				if (dialogResult == DialogResult.Yes) {
+			    //runCommand(@"powercfg -devicedisablewake “" + itemToAlter + "”");
 					
-					//runCommand(@"powercfg -devicedisablewake “" + itemToAlter + "”");
+			    getWakeDevices(@"powercfg -devicedisablewake """ + itemToAlter + @"""", false);
 					
-					getWakeDevices(@"powercfg -devicedisablewake """ + itemToAlter + @"""", false);
+                this.statusPanel.Text = "Done: Disabled " + itemToAlter;
 					
-					MessageBox.Show("Done");
-					
-					label1.Text = "Armed Wake Devices";
-					getWakeDevices("powercfg -devicequery wake_armed", false);
-					
-				} else if (dialogResult == DialogResult.No) {
-					//do something else
-				}
+			    label1.Text = "Armed Wake Devices";
+			    getWakeDevices("powercfg -devicequery wake_armed", false);
 			}
 		}
-		void BtnEnableWakeDeviceClick(object sender, EventArgs e)
+        void DisableAllButtonClick(object sender, EventArgs e)
+        {
+            if (itemsToAlter.Count() > 0)
+            {
+                //runCommand(@"powercfg -devicedisablewake “" + itemToAlter + "”");
+                foreach (string device in itemsToAlter)
+                {
+                    getWakeDevices(@"powercfg -devicedisablewake """ + device + @"""", true);
+                }
+
+                this.statusPanel.Text = "Done: Disabled all devices";
+
+                label1.Text = "Armed Wake Devices";
+                getWakeDevices("powercfg -devicequery wake_armed", false);
+            }
+        }
+        void BtnEnableWakeDeviceClick(object sender, EventArgs e)
 		{
 			if (itemToAlter != "" && itemToAlter != null) {
-				DialogResult dialogResult = MessageBox.Show("Are you sure you want to enable this item? \n\n" + itemToAlter, itemToAlter, MessageBoxButtons.YesNo);
-				if (dialogResult == DialogResult.Yes) {
-					
 					getWakeDevices(@"powercfg -deviceenablewake  """ + itemToAlter + @"""", false);
-					//runCommand(@"powercfg -deviceenablewake  “" + itemToAlter + "”");
-					
-					MessageBox.Show("Done");
-					
-					label1.Text = "Armed Wake Devices";
+                    //runCommand(@"powercfg -deviceenablewake  “" + itemToAlter + "”");
+
+                    this.statusPanel.Text = "Done: Enabled " + itemToAlter;
+
+                    label1.Text = "Armed Wake Devices";
 					getWakeDevices("powercfg -devicequery wake_armed", false);
-					
-				} else if (dialogResult == DialogResult.No) {
-					//do something else
-				}
 			}
 		}
 
@@ -189,17 +194,20 @@ namespace systemWakeManager
 		{
 			label1.Text = "All Wake Devices";
 			getWakeDevices("powercfg -devicequery wake_from_any", false);
-		}
+            this.statusPanel.Text = "Loaded All Wake Devices";
+        }
 		void BtnArmedWakeDevicesClick(object sender, EventArgs e)
 		{
 			label1.Text = "Armed Wake Devices";
 			getWakeDevices("powercfg -devicequery wake_armed", false);
-		}
+            this.statusPanel.Text = "Loaded Armed Wake Devices";
+        }
 		void BtnLastUsedWakeDeviceClick(object sender, EventArgs e)
 		{
 			label1.Text = "Last Used Wake Devices";
 			getWakeDevices("powercfg -lastwake", true);
-		}
+            this.statusPanel.Text = "Loaded Last Used Wake Devices";
+        }
 
 	}
 }
