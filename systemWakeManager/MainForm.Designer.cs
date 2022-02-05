@@ -16,18 +16,21 @@ namespace systemWakeManager
 		private System.ComponentModel.IContainer components = null;
 		private System.Windows.Forms.TextBox cmdResults;
 		private System.Windows.Forms.Button btnDisableButton;
+        private System.Windows.Forms.Button btnDisableAllButton;
 		private System.Windows.Forms.ComboBox alterWakeDeviceListCoB;
 		private System.Windows.Forms.Button btnAllWakeDevices;
 		private System.Windows.Forms.Button btnArmedWakeDevices;
 		private System.Windows.Forms.Button btnLastUsedWakeDevice;
 		private System.Windows.Forms.Button btnEnableWakeDevice;
 		private System.Windows.Forms.Label label1;
-		
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
+        private System.Windows.Forms.StatusBarPanel statusPanel;
+        private System.Windows.Forms.StatusBar mainStatusBar;
+
+        /// <summary>
+        /// Disposes resources used by the form.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
 				if (components != null) {
@@ -46,6 +49,7 @@ namespace systemWakeManager
 		{
 			this.cmdResults = new System.Windows.Forms.TextBox();
 			this.btnDisableButton = new System.Windows.Forms.Button();
+            this.btnDisableAllButton = new System.Windows.Forms.Button();
 			this.alterWakeDeviceListCoB = new System.Windows.Forms.ComboBox();
 			this.btnAllWakeDevices = new System.Windows.Forms.Button();
 			this.btnArmedWakeDevices = new System.Windows.Forms.Button();
@@ -72,10 +76,34 @@ namespace systemWakeManager
 			this.btnDisableButton.Text = "Disable Wake Device";
 			this.btnDisableButton.UseVisualStyleBackColor = true;
 			this.btnDisableButton.Click += new System.EventHandler(this.DisableButtonClick);
-			// 
-			// alterWakeDeviceListCoB
-			// 
-			this.alterWakeDeviceListCoB.FormattingEnabled = true;
+            // 
+            // btnDisableAllButton
+            // 
+            this.btnDisableAllButton.Location = new System.Drawing.Point(540, 300);
+            this.btnDisableAllButton.Name = "btnDisableAllButton";
+            this.btnDisableAllButton.Size = new System.Drawing.Size(133, 23);
+            this.btnDisableAllButton.TabIndex = 1;
+            this.btnDisableAllButton.Text = "Disable All Devices";
+            this.btnDisableAllButton.UseVisualStyleBackColor = true;
+            this.btnDisableAllButton.Click += new System.EventHandler(this.DisableAllButtonClick);
+            //
+            // statusPunel
+            //
+            this.mainStatusBar = new System.Windows.Forms.StatusBar();
+            this.statusPanel = new System.Windows.Forms.StatusBarPanel();
+
+            // Set first panel properties and add to StatusBar  
+            this.statusPanel.BorderStyle = System.Windows.Forms.StatusBarPanelBorderStyle.Sunken;
+            this.statusPanel.Text = "Application started. No action yet.";
+            this.statusPanel.ToolTipText = "Last Activity";
+            this.statusPanel.AutoSize = System.Windows.Forms.StatusBarPanelAutoSize.Spring;
+            this.mainStatusBar.Panels.Add(this.statusPanel);
+            this.mainStatusBar.ShowPanels = true;
+
+            // 
+            // alterWakeDeviceListCoB
+            // 
+            this.alterWakeDeviceListCoB.FormattingEnabled = true;
 			this.alterWakeDeviceListCoB.Location = new System.Drawing.Point(12, 326);
 			this.alterWakeDeviceListCoB.Name = "alterWakeDeviceListCoB";
 			this.alterWakeDeviceListCoB.Size = new System.Drawing.Size(383, 21);
@@ -137,7 +165,7 @@ namespace systemWakeManager
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Window;
-			this.ClientSize = new System.Drawing.Size(688, 364);
+			this.ClientSize = new System.Drawing.Size(688, 375);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btnEnableWakeDevice);
 			this.Controls.Add(this.btnLastUsedWakeDevice);
@@ -145,7 +173,9 @@ namespace systemWakeManager
 			this.Controls.Add(this.btnAllWakeDevices);
 			this.Controls.Add(this.alterWakeDeviceListCoB);
 			this.Controls.Add(this.btnDisableButton);
+            this.Controls.Add(this.btnDisableAllButton);
 			this.Controls.Add(this.cmdResults);
+            this.Controls.Add(this.mainStatusBar);
 			this.Name = "MainForm";
 			this.Text = "System Wake Manager";
 			this.ResumeLayout(false);
