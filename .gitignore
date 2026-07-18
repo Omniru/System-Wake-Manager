@@ -1,0 +1,17 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+
+# The published artifact at the repo root is intentionally tracked; it is
+# produced by publish.bat. Keep it out of the bin/ rule above by leaving it
+# at the root, not by un-ignoring it here.
+
+# Visual Studio / SharpDevelop user state
+*.user
+*.suo
+*.userprefs
+.vs/
+
+# Build logs
+*.binlog
+*.log

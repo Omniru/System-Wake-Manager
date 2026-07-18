@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle ("System Wake Manager")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyDescription ("Enable or disable Windows wake devices via powercfg.")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("systemWakeManager")]
-[assembly: AssemblyCopyright ("Eric Morris Copyright 2016")]
+[assembly: AssemblyCopyright ("Copyright (c) 2016-2026 Omniru and contributors")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 // This sets the default COM visibility of types in the assembly to invisible.

@@ -14,10 +14,10 @@ namespace systemWakeManager
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
 		private System.ComponentModel.IContainer components = null;
-		private System.Windows.Forms.TextBox cmdResults;
+		private System.Windows.Forms.ListBox deviceList;
 		private System.Windows.Forms.Button btnDisableButton;
         private System.Windows.Forms.Button btnDisableAllButton;
-		private System.Windows.Forms.ComboBox alterWakeDeviceListCoB;
+		private System.Windows.Forms.Label legendLabel;
 		private System.Windows.Forms.Button btnAllWakeDevices;
 		private System.Windows.Forms.Button btnArmedWakeDevices;
 		private System.Windows.Forms.Button btnLastUsedWakeDevice;
@@ -25,6 +25,7 @@ namespace systemWakeManager
 		private System.Windows.Forms.Label label1;
         private System.Windows.Forms.StatusBarPanel statusPanel;
         private System.Windows.Forms.StatusBar mainStatusBar;
+        private System.Drawing.Font strikeoutFont;
 
         /// <summary>
         /// Disposes resources used by the form.
@@ -35,6 +36,9 @@ namespace systemWakeManager
 			if (disposing) {
 				if (components != null) {
 					components.Dispose();
+				}
+				if (strikeoutFont != null) {
+					strikeoutFont.Dispose();
 				}
 			}
 			base.Dispose(disposing);
@@ -47,25 +51,29 @@ namespace systemWakeManager
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.cmdResults = new System.Windows.Forms.TextBox();
+			this.deviceList = new System.Windows.Forms.ListBox();
 			this.btnDisableButton = new System.Windows.Forms.Button();
             this.btnDisableAllButton = new System.Windows.Forms.Button();
-			this.alterWakeDeviceListCoB = new System.Windows.Forms.ComboBox();
+			this.legendLabel = new System.Windows.Forms.Label();
 			this.btnAllWakeDevices = new System.Windows.Forms.Button();
 			this.btnArmedWakeDevices = new System.Windows.Forms.Button();
 			this.btnLastUsedWakeDevice = new System.Windows.Forms.Button();
 			this.btnEnableWakeDevice = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
-			// 
-			// cmdResults
-			// 
-			this.cmdResults.Location = new System.Drawing.Point(12, 38);
-			this.cmdResults.Multiline = true;
-			this.cmdResults.Name = "cmdResults";
-			this.cmdResults.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.cmdResults.Size = new System.Drawing.Size(661, 227);
-			this.cmdResults.TabIndex = 0;
+			//
+			// deviceList
+			//
+			this.deviceList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.deviceList.HorizontalScrollbar = true;
+			this.deviceList.IntegralHeight = false;
+			this.deviceList.Location = new System.Drawing.Point(12, 38);
+			this.deviceList.Name = "deviceList";
+			this.deviceList.Size = new System.Drawing.Size(661, 227);
+			this.deviceList.Sorted = true;
+			this.deviceList.TabIndex = 0;
+			this.deviceList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.DeviceListDrawItem);
+			this.deviceList.DoubleClick += new System.EventHandler(this.DeviceListDoubleClick);
 			// 
 			// btnDisableButton
 			// 
@@ -100,16 +108,16 @@ namespace systemWakeManager
             this.mainStatusBar.Panels.Add(this.statusPanel);
             this.mainStatusBar.ShowPanels = true;
 
-            // 
-            // alterWakeDeviceListCoB
-            // 
-            this.alterWakeDeviceListCoB.FormattingEnabled = true;
-			this.alterWakeDeviceListCoB.Location = new System.Drawing.Point(12, 326);
-			this.alterWakeDeviceListCoB.Name = "alterWakeDeviceListCoB";
-			this.alterWakeDeviceListCoB.Size = new System.Drawing.Size(383, 21);
-			this.alterWakeDeviceListCoB.Sorted = true;
-			this.alterWakeDeviceListCoB.TabIndex = 2;
-			this.alterWakeDeviceListCoB.SelectedIndexChanged += new System.EventHandler(this.AlterWakeDeviceListCoBSelectedIndexChanged);
+            //
+            // legendLabel
+            //
+			this.legendLabel.ForeColor = System.Drawing.Color.Gray;
+			this.legendLabel.Location = new System.Drawing.Point(12, 326);
+			this.legendLabel.Name = "legendLabel";
+			this.legendLabel.Size = new System.Drawing.Size(383, 23);
+			this.legendLabel.TabIndex = 2;
+			this.legendLabel.Text = "Select a device above (double-click toggles). Greyed out = wake disabled.";
+			this.legendLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// btnAllWakeDevices
 			// 
@@ -171,10 +179,10 @@ namespace systemWakeManager
 			this.Controls.Add(this.btnLastUsedWakeDevice);
 			this.Controls.Add(this.btnArmedWakeDevices);
 			this.Controls.Add(this.btnAllWakeDevices);
-			this.Controls.Add(this.alterWakeDeviceListCoB);
+			this.Controls.Add(this.legendLabel);
 			this.Controls.Add(this.btnDisableButton);
             this.Controls.Add(this.btnDisableAllButton);
-			this.Controls.Add(this.cmdResults);
+			this.Controls.Add(this.deviceList);
             this.Controls.Add(this.mainStatusBar);
 			this.Name = "MainForm";
 			this.Text = "System Wake Manager";
